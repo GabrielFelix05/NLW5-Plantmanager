@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core'
 import React, { useState } from 'react'
 import {
     View,
@@ -18,6 +19,7 @@ export default function UserIdentification(){
     const [isFocused, setIsFocused] = useState(false)
     const [isFilled, setIsFilled] = useState(false)
     const [name, setName] = useState<string>()
+    const navigation = useNavigation()
 
     function handleInputBlur(){
         setIsFocused(false)
@@ -31,6 +33,10 @@ export default function UserIdentification(){
     function handleInputChange(value: string){
         setIsFilled(!!value)
         setName(value)
+    }
+
+    function handleSubmit(){
+        navigation.navigate('Confirmation')
     }
 
     return(
@@ -64,7 +70,9 @@ export default function UserIdentification(){
                         />
 
                         <View style={styles.footer}>
-                            <Button/>    
+                            <Button 
+                                title="Confirmar"
+                                onPress={handleSubmit}/>    
                         </View>
                     </View>
                 </View>

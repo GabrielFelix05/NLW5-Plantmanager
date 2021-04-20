@@ -14,8 +14,15 @@ import { Feather } from '@expo/vector-icons'
 import watering from '../assets/watering.png'
 import colors from '../styles/colors'
 import fonts from '../styles/fonts'
+import { useNavigation } from '@react-navigation/core'
 
 export default function Welcome(){
+    const navigation = useNavigation()
+
+    function handleStart(){
+        navigation.navigate('UserIdentification')
+    }
+
   return(
     <SafeAreaView style={styles.Container}>
         <View style={styles.wrapper}>
@@ -27,8 +34,8 @@ export default function Welcome(){
             </Text>
 
             <Image source={watering} 
-            style={styles.image} 
-            resizeMode="contain"/>
+                style={styles.image} 
+                resizeMode="contain"/>
 
             <Text style={styles.subtitle}>
                 Não esqueça mais de regar suas plantas. 
@@ -37,8 +44,10 @@ export default function Welcome(){
             </Text>
 
             <TouchableOpacity 
-            style={styles.button} 
-            activeOpacity={0.8}>
+                style={styles.button} 
+                activeOpacity={0.8}
+                onPress={handleStart}    
+            >
                 <Feather name="chevron-right" 
                 style={styles.buttonIcon}/>
             </TouchableOpacity>
