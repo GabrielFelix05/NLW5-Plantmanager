@@ -16,20 +16,20 @@ import fonts from '../styles/fonts'
 
 export default function UserIdentification(){
     const [isFocused, setIsFocused] = useState(false)
-    const [isFilled, setFilled] = useState(false)
-    const [name, setName] = useState<String>()
+    const [isFilled, setIsFilled] = useState(false)
+    const [name, setName] = useState<string>()
 
     function handleInputBlur(){
         setIsFocused(false)
-        setFilled(!name)
+        setIsFilled(!!name)
     }
 
     function handleInputFocus(){
         setIsFocused(true)
     }
 
-    function handleInputChange(value: String){
-        setFilled(!!value)
+    function handleInputChange(value: string){
+        setIsFilled(!!value)
         setName(value)
     }
 
