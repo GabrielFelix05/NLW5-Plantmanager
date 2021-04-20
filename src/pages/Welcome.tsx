@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
         lineHeight: 34
     },
     image:{
-        //anotar
         height: Dimensions.get('window').width * 0.7,
     },
     subtitle:{
