@@ -8,6 +8,7 @@ import {
 import colors from '../styles/colors'
 
 import Header from '../components/Header'
+import Load from '../components/Load'
 import fonts from '../styles/fonts'
 import EnviromentButton from '../components/EnviromentButton'
 import api from '../services/api'
@@ -34,10 +35,21 @@ interface PlantProps {
 export default function PlanetSelect(){
     const [enviroments, setEnviroments] = useState<EnviromentProps[]>([])
     const [plants, setPlants] = useState<PlantProps[]>([])
+    const [filteredPlants, setFilteredPlants] = useState<PlantProps[]>([])
     const [enviromentSelected, setEnviromentSelected] = useState('all')
+    const [load, setLoad] = useState(true)
 
     function handleEnrivomentSelected(enviroments: string){
         setEnviromentSelected(enviroments)
+
+        if(enviroments == 'all')
+            return setFilteredPlants(plants)
+
+        const filtered = plants.filter(plant =>
+            plant.environments.includes(enviroments)    
+        )
+
+        setFilteredPlants(filtered)
     }
 
     useEffect(() => {
@@ -58,9 +70,14 @@ export default function PlanetSelect(){
         async function fetchPlants(){
             const { data } = await api.get('plants?_sort=name&_order=asc')
             setPlants(data)
+            setFilteredPlants(data)
+            setLoad(false)
         }
         fetchPlants()
     }, [])
+
+    if(load)
+        return <Load/>
 
     return(
         <View style={styles.container }>
@@ -88,7 +105,7 @@ export default function PlanetSelect(){
 
             <View style={styles.plants}>
                     <FlatList
-                        data={plants}
+                        data={filteredPlants}
                         renderItem={({item}) => (
                             <PlantCardPrimary data={item}/>
                         )}
