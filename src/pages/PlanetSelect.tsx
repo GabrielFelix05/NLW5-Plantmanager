@@ -11,18 +11,38 @@ import Header from '../components/Header'
 import fonts from '../styles/fonts'
 import EnviromentButton from '../components/EnviromentButton'
 import api from '../services/api'
+import { PlantCardPrimary } from '../components/PlantCardPrimary'
 
 interface EnviromentProps {
     key: string,
     title: string
 }
 
+interface PlantProps {
+    id: string
+    name: string
+    about: string
+    water_tips: string
+    photo: string
+    environments: [string]
+    frequency: {
+      times: number
+      repeat_every: string
+    }
+}
+
 export default function PlanetSelect(){
     const [enviroments, setEnviroments] = useState<EnviromentProps[]>([])
+    const [plants, setPlants] = useState<PlantProps[]>([])
+    const [enviromentSelected, setEnviromentSelected] = useState('all')
+
+    function handleEnrivomentSelected(enviroments: string){
+        setEnviromentSelected(enviroments)
+    }
 
     useEffect(() => {
         async function fetchEnviroment(){
-            const { data } = await api.get('plants_environments')
+            const { data } = await api.get('plants_environments?_sort=title&_order=asc')
             setEnviroments([
                 {
                     key: 'all',
@@ -33,6 +53,15 @@ export default function PlanetSelect(){
         }
         fetchEnviroment()
     }, [])
+
+    useEffect(() => {
+        async function fetchPlants(){
+            const { data } = await api.get('plants?_sort=name&_order=asc')
+            setPlants(data)
+        }
+        fetchPlants()
+    }, [])
+
     return(
         <View style={styles.container }>
             <View style={styles.header}>
@@ -47,6 +76,8 @@ export default function PlanetSelect(){
                     renderItem={({item}) => (
                         <EnviromentButton
                             title={item.title}
+                            active={item.key === enviromentSelected}
+                            onPress={() => handleEnrivomentSelected(item.key)}
                         />
                     )}
                     horizontal
@@ -54,6 +85,17 @@ export default function PlanetSelect(){
                     contentContainerStyle={styles.enviromentList}
                 />
             </View>  
+
+            <View style={styles.plants}>
+                    <FlatList
+                        data={plants}
+                        renderItem={({item}) => (
+                            <PlantCardPrimary data={item}/>
+                        )}
+                        showsVerticalScrollIndicator={false}
+                        numColumns={2}
+                    />
+            </View>
         </View>
     )
 }
@@ -84,5 +126,10 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         marginLeft: 32,
         marginVertical: 32
+    },
+    plants:{
+        flex: 1,
+        paddingHorizontal: 32,
+        justifyContent: 'center'
     }
 })
