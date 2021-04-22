@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     greeting:{
         fontSize: 32,
         color: colors.heading,
-        fontFamily: fonts.heading
+        fontFamily: fonts.text
     },
     userName:{
         fontSize: 32,
