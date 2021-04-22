@@ -32,8 +32,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: getStatusBarHeight(),
-        paddingVertical: 20,    
-        padding: 20
+        paddingVertical: 20,
     },
     image:{
         width: 70,
